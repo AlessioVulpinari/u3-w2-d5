@@ -8,7 +8,7 @@ import WeatherPage from "./components/WeatherPage"
 function App() {
   const [cityName, setCityName] = useState("")
   return (
-    <div className='App text-bg-dark'>
+    <div className='App text-white'>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<HomePage cityName={cityName} setCityName={setCityName} />} />

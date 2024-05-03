@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { Alert, Col, Container, Row } from "react-bootstrap"
-import { useParams } from "react-router-dom"
-
+import { useNavigate, useParams } from "react-router-dom"
 const today = new Date().toDateString()
 
 const WeatherPage = (props) => {
   const params = useParams()
+  const navigate = useNavigate()
 
   const [isError, setIsError] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
@@ -213,6 +213,10 @@ const WeatherPage = (props) => {
     return celsius
   }
 
+  const handleIconClick = () => {
+    navigate("/")
+  }
+
   useEffect(() => {
     fetchCordinates()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,7 +227,10 @@ const WeatherPage = (props) => {
       {isError ? createAlert(errorMsg) : console.log("Nessun errore")}
       {todayWeather && !isError && (
         <Container>
-          <Container>
+          <Container className='bg-gradient text-center'>
+            <div className='text-start py-2' onClick={() => handleIconClick()}>
+              <i className='bi bi-arrow-90deg-left display-5'></i>
+            </div>
             <h1 className='fs-1 fw-bold'>{params.cityName}</h1>
             <h2 className='fs-3 fw-bolder'>{today}</h2>
             <Row>
@@ -262,8 +269,8 @@ const WeatherPage = (props) => {
               </Col>
             </Row>
           </Container>
-          <Container>
-            <h2 className='fs-3 fw-bolder my-3'>Next Five Days:</h2>
+          <Container className='bg-gradient my-2'>
+            <h2 className='fs-3 fw-bolder py-2'>Next Five Days:</h2>
             <Row>
               {fiveDayWeather &&
                 fiveDayWeather.map((obj, i) => (
