@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { Alert, Col, Container, Row } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 
+const today = new Date().toDateString()
+
 const WeatherPage = (props) => {
   const params = useParams()
 
@@ -10,7 +12,6 @@ const WeatherPage = (props) => {
   //   const [isLoading, setIsLoading] = useState(true)
   const [todayWeather, setTodayWeather] = useState(null)
   const [fiveDayWeather, setFiveDayWeather] = useState(null)
-  const today = new Date()
   let cityCordinates = null
 
   const fetchCordinates = () => {
@@ -221,8 +222,10 @@ const WeatherPage = (props) => {
     <>
       {isError ? createAlert(errorMsg) : console.log("Nessun errore")}
       {todayWeather && !isError && (
-        <Container className='text-bg-dark'>
+        <Container>
           <Container>
+            <h1 className='fs-1 fw-bold'>{params.cityName}</h1>
+            <h2 className='fs-3 fw-bolder'>{today}</h2>
             <Row>
               <Col>
                 <img
@@ -235,25 +238,32 @@ const WeatherPage = (props) => {
             <Row>
               <Col xs={4}>
                 <Row>
-                  <Col xs={12}>{todayWeather.weather[0].description}</Col>
+                  <Col className='fw-bolder' xs={12}>
+                    {todayWeather.weather[0].description}
+                  </Col>
                   <Col xs={12}>{kelvinToCelsius(todayWeather.main.temp)} °C</Col>
                 </Row>
               </Col>
               <Col xs={4}>
                 <Row>
-                  <Col xs={12}>Wind:</Col>
+                  <Col className='fw-bolder' xs={12}>
+                    Wind:
+                  </Col>
                   <Col xs={12}>{todayWeather.wind.speed} m/s</Col>
                 </Row>
               </Col>
               <Col xs={4}>
                 <Row>
-                  <Col xs={12}>Humidity:</Col>
+                  <Col className='fw-bolder' xs={12}>
+                    Humidity:
+                  </Col>
                   <Col xs={12}>{todayWeather.main.humidity}%</Col>
                 </Row>
               </Col>
             </Row>
           </Container>
           <Container>
+            <h2 className='fs-3 fw-bolder my-3'>Next Five Days:</h2>
             <Row>
               {fiveDayWeather &&
                 fiveDayWeather.map((obj, i) => (
