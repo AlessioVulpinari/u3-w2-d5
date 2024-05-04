@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react"
 import { Alert, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom"
+
+// Salviamo in una variabile la giornata odierna
 const today = new Date().toDateString()
 
 const WeatherPage = (props) => {
+  // Stati per la gestione errori
+  const [isError, setIsError] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  // Stato per la gestione dei caricamenti
+  const [isLoading, setIsLoading] = useState(true)
+  // Stato per la gestione del meteo odierno
+  const [todayWeather, setTodayWeather] = useState(null)
+  // Stato per la gestione del meteo dei prossimi 5 giorni
+  const [fiveDayWeather, setFiveDayWeather] = useState(null)
+
+  // Recuperiamo il parametro del nome della città
   const params = useParams()
   const navigate = useNavigate()
 
-  const [isError, setIsError] = useState(false)
-  const [errorMsg, setErrorMsg] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
-  const [todayWeather, setTodayWeather] = useState(null)
-  const [fiveDayWeather, setFiveDayWeather] = useState(null)
+  // Variabile per salvare le cordinate della città cercata
   let cityCordinates = null
 
+  // Fetch per cercare le cordinate della città
   const fetchCordinates = () => {
     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${params.cityName}&appid=47682873ae7cd15430297705dd2c8022`)
       .then((response) => {
@@ -61,8 +71,11 @@ const WeatherPage = (props) => {
           setIsError(true)
           throw new Error("No city finded")
         } else {
+          // Creo un oggetto per salvarmi la latitudine e la longitudine della città
           const cordinates = { lat: parseFloat(data[0].lat).toFixed(2), lon: parseFloat(data[0].lon).toFixed(2) }
+          // e la salvo nella variabile
           cityCordinates = cordinates
+          // Successivamente con quei dati richiamo le fetch per cercare il meteo della giornata odierna e dei prossimi 5 giorni
           fetchTodayWeather()
           fetchFiveDaysWeather()
         }
@@ -75,6 +88,7 @@ const WeatherPage = (props) => {
       })
   }
 
+  // Fetch per ricevere il meteo della giornata odierna
   const fetchTodayWeather = () => {
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${cityCordinates.lat}&lon=${cityCordinates.lon}&appid=47682873ae7cd15430297705dd2c8022`
@@ -124,6 +138,7 @@ const WeatherPage = (props) => {
           setIsError(true)
           throw new Error("No weather info finded")
         } else {
+          // Settiamo lo stato con i dati appena ricevuti
           setTodayWeather(data)
         }
       })
@@ -135,6 +150,7 @@ const WeatherPage = (props) => {
       })
   }
 
+  // Fetch per il meteo dei prossimi dei 5 giorni
   const fetchFiveDaysWeather = () => {
     fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${cityCordinates.lat}&lon=${cityCordinates.lon}&appid=47682873ae7cd15430297705dd2c8022`
@@ -184,8 +200,7 @@ const WeatherPage = (props) => {
           setIsError(true)
           throw new Error("No weather info finded")
         } else {
-          //   getNewDate(today, data.list)
-
+          // Settiamo lo stato con i dati appena ricevuti
           setFiveDayWeather(data.list)
         }
       })
@@ -208,10 +223,12 @@ const WeatherPage = (props) => {
     )
   }
 
+  // Funzione per ritornare alla HomePage
   const handleIconClick = () => {
     navigate("/")
   }
 
+  // Richiamiamo la funzione di fetch delle cordinate solo al montaggio del componente (similmente ad un componentDidMount)
   useEffect(() => {
     fetchCordinates()
     // eslint-disable-next-line react-hooks/exhaustive-deps

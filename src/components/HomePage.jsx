@@ -1,28 +1,37 @@
-import { Col, Container, FormControl, Row, Form, Alert, Spinner } from "react-bootstrap"
+import { Col, Container, FormControl, Row, Form, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Carousel from "react-bootstrap/Carousel"
+
+// Cordinate di alcune città, utilizzate per la creazione del carosello
 const prague = { lat: 50.08, lon: 14.42 }
 const atene = { lat: 37.98, lon: 23.72 }
 const tokyo = { lat: 35.68, lon: 135.75 }
 
 const HomePage = (props) => {
+  // -------------------- STATI -------------------------
+  // Stato per gestire le fetch del meteo di praga, atene e tokyo
   const [pragueWeather, setPragueWeather] = useState(null)
   const [ateneWeather, setAteneWeather] = useState(null)
   const [tokyoWeather, setTokyoWeather] = useState(null)
+  // Stati per la gestione errori
   const [isError, setIsError] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
+  // Stato per la gestione degli indici delle immagini del carosello
   const [index, setIndex] = useState(0)
-
+  // Set dello stato degli indici del carosello
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex)
   }
+
+  // Funzioni per il cambio di pagina al submit del form
   const navigate = useNavigate()
   const handleFormSubmit = (e) => {
     e.preventDefault()
     navigate(`/weather-page/${props.cityName}`)
   }
 
+  // Fetch per il meteo di Praga
   const fetchPragueWeather = () => {
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${prague.lat}&lon=${prague.lon}&appid=47682873ae7cd15430297705dd2c8022`
@@ -72,6 +81,7 @@ const HomePage = (props) => {
           setIsError(true)
           throw new Error("No weather info finded")
         } else {
+          // Settiamo lo stato con i dati appena ricevuti
           setPragueWeather(data)
         }
       })
@@ -83,6 +93,7 @@ const HomePage = (props) => {
       })
   }
 
+  // Fetch per il meteo di Atene
   const fetchAteneWeather = () => {
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${atene.lat}&lon=${atene.lon}&appid=47682873ae7cd15430297705dd2c8022`
@@ -132,6 +143,7 @@ const HomePage = (props) => {
           setIsError(true)
           throw new Error("No weather info finded")
         } else {
+          // Settiamo lo stato con i dati appena ricevuti
           setAteneWeather(data)
         }
       })
@@ -143,6 +155,7 @@ const HomePage = (props) => {
       })
   }
 
+  // Fetch per il meteo di Tokyo
   const fetchTokyoWeather = () => {
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${tokyo.lat}&lon=${tokyo.lon}&appid=47682873ae7cd15430297705dd2c8022`
@@ -192,6 +205,7 @@ const HomePage = (props) => {
           setIsError(true)
           throw new Error("No weather info finded")
         } else {
+          // Settiamo lo stato con i dati appena ricevuti
           setTokyoWeather(data)
         }
       })
@@ -213,6 +227,7 @@ const HomePage = (props) => {
     )
   }
 
+  // Richiamiamo le funzioni di fetch solo al montaggio del componente (similmente ad un componentDidMount)
   useEffect(() => {
     fetchPragueWeather()
     fetchAteneWeather()
