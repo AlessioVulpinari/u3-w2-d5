@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Alert, Col, Container, Row } from "react-bootstrap"
+import { Alert, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom"
 const today = new Date().toDateString()
 
@@ -9,7 +9,7 @@ const WeatherPage = (props) => {
 
   const [isError, setIsError] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
-  //   const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [todayWeather, setTodayWeather] = useState(null)
   const [fiveDayWeather, setFiveDayWeather] = useState(null)
   let cityCordinates = null
@@ -195,6 +195,7 @@ const WeatherPage = (props) => {
         setErrorMsg(err.name + " : " + err.message)
         setIsError(true)
       })
+      .finally(setIsLoading(false))
   }
 
   // Funzione per istanziare gli Alert di errore
@@ -218,6 +219,11 @@ const WeatherPage = (props) => {
 
   return (
     <>
+      {isLoading && !isError && (
+        <Spinner animation='border' role='status' variant='primary' className='mx-auto'>
+          <span className='visually-hidden'>Loading...</span>
+        </Spinner>
+      )}
       {isError ? createAlert(errorMsg) : console.log("Nessun errore")}
       {todayWeather && !isError && (
         <Container>
