@@ -12,14 +12,6 @@ body {
   background-image: linear-gradient(to bottom, #032396, #400961, #3a0337, #260619, #000000);
 }
 
-.bg-gradient {
-  background-image: linear-gradient(to bottom, transparent, #dedede);
-}
-
-.bg-gradient-reverse {
-  background-image: linear-gradient(to top, transparent, #dedede);
-}
-
 i:hover {
   color: #dedede;
 }

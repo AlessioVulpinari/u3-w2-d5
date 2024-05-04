@@ -207,12 +207,6 @@ const WeatherPage = (props) => {
     )
   }
 
-  const kelvinToCelsius = (kelvin) => {
-    let celsius = parseFloat(kelvin) - 273.15
-    celsius = celsius.toFixed(2)
-    return celsius
-  }
-
   const handleIconClick = () => {
     navigate("/")
   }
@@ -227,7 +221,7 @@ const WeatherPage = (props) => {
       {isError ? createAlert(errorMsg) : console.log("Nessun errore")}
       {todayWeather && !isError && (
         <Container>
-          <Container className='bg-gradient text-center'>
+          <Container className='text-center'>
             <div className='text-start py-2' onClick={() => handleIconClick()}>
               <i className='bi bi-arrow-90deg-left display-5'></i>
             </div>
@@ -248,7 +242,7 @@ const WeatherPage = (props) => {
                   <Col className='fw-bolder' xs={12}>
                     {todayWeather.weather[0].description}
                   </Col>
-                  <Col xs={12}>{kelvinToCelsius(todayWeather.main.temp)} °C</Col>
+                  <Col xs={12}>{props.kelvinToCelsius(todayWeather.main.temp)} °C</Col>
                 </Row>
               </Col>
               <Col xs={4}>
@@ -269,7 +263,7 @@ const WeatherPage = (props) => {
               </Col>
             </Row>
           </Container>
-          <Container className='bg-gradient my-2'>
+          <Container className='my-2'>
             <h2 className='fs-3 fw-bolder py-2'>Next Five Days:</h2>
             <Row>
               {fiveDayWeather &&
@@ -285,8 +279,8 @@ const WeatherPage = (props) => {
                       <span>{obj.dt_txt}</span>
                     </div>
                     <div className='d-flex justify-content-between'>
-                      <span>Max: {kelvinToCelsius(obj.main.temp_max)} °C</span>
-                      <span>Min: {kelvinToCelsius(obj.main.temp_min)} </span>
+                      <span>Max: {props.kelvinToCelsius(obj.main.temp_max)} °C</span>
+                      <span>Min: {props.kelvinToCelsius(obj.main.temp_min)} °C</span>
                     </div>
                   </Col>
                 ))}

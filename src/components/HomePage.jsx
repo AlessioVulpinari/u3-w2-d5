@@ -213,19 +213,13 @@ const HomePage = (props) => {
     )
   }
 
-  const kelvinToCelsius = (kelvin) => {
-    let celsius = parseFloat(kelvin) - 273.15
-    celsius = celsius.toFixed()
-    return celsius
-  }
-
   useEffect(() => {
     fetchPragueWeather()
     fetchAteneWeather()
     fetchTokyoWeather()
   }, [])
   return (
-    <Container>
+    <Container className='my-2'>
       <Row className='justify-content-center text-center'>
         <Col xs={12} sm={10} md={8} xl={6}>
           <h1>Epiweather</h1>
@@ -252,13 +246,13 @@ const HomePage = (props) => {
               <Carousel.Item>
                 <img
                   className='img-fluid'
-                  src='https://images.unsplash.com/photo-1571778200037-250828fe3eee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                  src='https://images.unsplash.com/photo-1563804026626-f0225ec1817a?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
                   alt='prague'
                   style={{ opacity: 0.6 }}
                 ></img>
                 <Carousel.Caption className='shadow'>
                   <h3>Prague: {pragueWeather.weather[0].description}</h3>
-                  <p>{kelvinToCelsius(pragueWeather.main.temp)} °C</p>
+                  <p>{props.kelvinToCelsius(pragueWeather.main.temp)} °C</p>
                 </Carousel.Caption>
               </Carousel.Item>
             )}
@@ -273,7 +267,7 @@ const HomePage = (props) => {
                 ></img>
                 <Carousel.Caption>
                   <h3>Atene: {ateneWeather.weather[0].description}</h3>
-                  <p>{kelvinToCelsius(ateneWeather.main.temp)} °C</p>
+                  <p>{props.kelvinToCelsius(ateneWeather.main.temp)} °C</p>
                 </Carousel.Caption>
               </Carousel.Item>
             )}
@@ -288,7 +282,7 @@ const HomePage = (props) => {
                 ></img>
                 <Carousel.Caption className='shadow'>
                   <h3>Tokyo: {tokyoWeather.weather[0].description}</h3>
-                  <p>{kelvinToCelsius(tokyoWeather.main.temp)} °C</p>
+                  <p>{props.kelvinToCelsius(tokyoWeather.main.temp)} °C</p>
                 </Carousel.Caption>
               </Carousel.Item>
             )}
