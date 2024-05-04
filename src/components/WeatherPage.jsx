@@ -225,6 +225,7 @@ const WeatherPage = (props) => {
 
   // Funzione per ritornare alla HomePage
   const handleIconClick = () => {
+    props.setCityName("")
     navigate("/")
   }
 
